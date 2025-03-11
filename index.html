@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <title>IELTS Score Calculator</title>
+    <style>
+      * {
+        font-family: 'Product Sans Regular', sans-serif;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background: #f0f2f5;
+        padding: 20px;
+      }
+
+      .calculators-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        max-width: 1000px;
+        width: 100%;
+      }
+
+      .calculator {
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .reading {
+        border-top: 6px solid #1a73e8;
+      }
+
+      .listening {
+        border-top: 6px solid #34a853;
+      }
+
+      h2 {
+        color: #202124;
+        margin: 0 0 25px 0;
+        font-size: 1.8rem;
+      }
+
+      input {
+        width: 100%;
+        padding: 15px;
+        margin: 15px 0;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        text-align: center;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: currentColor;
+      }
+
+      button {
+        background: #1a73e8;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: background 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .listening button {
+        background: #34a853;
+      }
+
+      .listening button:hover {
+        background: #2b8a47;
+      }
+
+      .result {
+        margin-top: 25px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        padding: 20px;
+        border-radius: 8px;
+        background: #f8f9fa;
+      }
+
+      .reading .result {
+        color: #1a73e8;
+      }
+
+      .listening .result {
+        color: #34a853;
+      }
+
+      .notification {
+        position: fixed;
+        top: 20px;
+        background: #1a73e8;
+        color: white;
+        padding: 15px 30px;
+        border-radius: 8px;
+        display: none;
+        font-size: 1.1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .calculators-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        
+        .calculator {
+          padding: 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="notification" id="notification">Score calculated!</div>
+
+    <div class="calculators-container">
+      <!-- Reading Calculator -->
+      <div class="calculator reading">
+        <h2>Reading Score Calculator</h2>
+        <input
+          type="number"
+          id="readingInput"
+          placeholder="Correct answers (0-40)"
+          min="0"
+          max="40"
+        />
+        <button onclick="calculateReading()">Calculate Reading Band</button>
+        <div class="result" id="readingResult">-</div>
+      </div>
+
+      <!-- Listening Calculator -->
+      <div class="calculator listening">
+        <h2>Listening Score Calculator</h2>
+        <input
+          type="number"
+          id="listeningInput"
+          placeholder="Correct answers (0-40)"
+          min="0"
+          max="40"
+        />
+        <button onclick="calculateListening()">Calculate Listening Band</button>
+        <div class="result" id="listeningResult">-</div>
+      </div>
+    </div>
+
+    <script>
+      const readingBandScores = [
+        { range: [39, 40], band: 9.0 },
+        { range: [37, 38], band: 8.5 },
+        { range: [35, 36], band: 8.0 },
+        { range: [33, 34], band: 7.5 },
+        { range: [30, 32], band: 7.0 },
+        { range: [27, 29], band: 6.5 },
+        { range: [23, 26], band: 6.0 },
+        { range: [19, 22], band: 5.5 },
+        { range: [15, 18], band: 5.0 },
+        { range: [13, 14], band: 4.5 },
+        { range: [10, 12], band: 4.0 },
+        { range: [8, 9], band: 3.5 },
+        { range: [6, 7], band: 3.0 },
+        { range: [4, 5], band: 2.5 },
+        { range: [2, 3], band: 2.0 },
+      ];
+
+      const listeningBandScores = [
+        { range: [39, 40], band: 9.0 },
+        { range: [37, 38], band: 8.5 },
+        { range: [35, 36], band: 8.0 },
+        { range: [32, 34], band: 7.5 },
+        { range: [30, 31], band: 7.0 },
+        { range: [27, 29], band: 6.5 },
+        { range: [23, 26], band: 6.0 },
+        { range: [19, 22], band: 5.5 },
+        { range: [15, 18], band: 5.0 },
+        { range: [13, 14], band: 4.5 },
+        { range: [10, 12], band: 4.0 },
+        { range: [8, 9], band: 3.5 },
+        { range: [6, 7], band: 3.0 },
+        { range: [4, 5], band: 2.5 },
+        { range: [2, 3], band: 2.0 },
+      ];
+
+      function getBand(score, bandScores) {
+        for (let i = 0; i < bandScores.length; i++) {
+          if (
+            score >= bandScores[i].range[0] &&
+            score <= bandScores[i].range[1]
+          ) {
+            return bandScores[i].band;
+          }
+        }
+        return 1.0;
+      }
+
+      function calculateReading() {
+        const score = parseInt(document.getElementById("readingInput").value) || 0;
+        const band = getBand(score, readingBandScores);
+        document.getElementById("readingResult").textContent = band.toFixed(1);
+        showNotification();
+      }
+
+      function calculateListening() {
+        const score = parseInt(document.getElementById("listeningInput").value) || 0;
+        const band = getBand(score, listeningBandScores);
+        document.getElementById("listeningResult").textContent = band.toFixed(1);
+        showNotification();
+      }
+
+      function showNotification() {
+        const notification = document.getElementById("notification");
+        notification.style.display = "block";
+        setTimeout(() => {
+          notification.style.display = "none";
+        }, 1500);
+      }
+    </script>
+  </body>
+</html>
