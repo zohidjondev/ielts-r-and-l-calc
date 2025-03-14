@@ -3,11 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
     <title>IELTS Score Calculator</title>
     <style>
       * {
-        font-family: 'Product Sans Regular', sans-serif;
+        font-family: "Product Sans Regular", sans-serif;
         box-sizing: border-box;
       }
 
@@ -37,8 +55,6 @@
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
       }
-
-    
 
       h2 {
         color: #202124;
@@ -118,7 +134,7 @@
           grid-template-columns: 1fr;
           gap: 20px;
         }
-        
+
         .calculator {
           padding: 25px;
         }
@@ -208,16 +224,19 @@
       }
 
       function calculateReading() {
-        const score = parseInt(document.getElementById("readingInput").value) || 0;
+        const score =
+          parseInt(document.getElementById("readingInput").value) || 0;
         const band = getBand(score, readingBandScores);
         document.getElementById("readingResult").textContent = band.toFixed(1);
         showNotification();
       }
 
       function calculateListening() {
-        const score = parseInt(document.getElementById("listeningInput").value) || 0;
+        const score =
+          parseInt(document.getElementById("listeningInput").value) || 0;
         const band = getBand(score, listeningBandScores);
-        document.getElementById("listeningResult").textContent = band.toFixed(1);
+        document.getElementById("listeningResult").textContent =
+          band.toFixed(1);
         showNotification();
       }
 
