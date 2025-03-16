@@ -4,28 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="/favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="/favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="/favicon/site.webmanifest" />
     <title>IELTS Score Calculator</title>
     <style>
       * {
-        font-family: "Product Sans Regular", sans-serif;
+        font-family: "Product Sans Regular", -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         box-sizing: border-box;
       }
 
@@ -33,147 +16,305 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        height: 100vh;
+        min-height: 100vh;
         margin: 0;
-        background: #f0f2f5;
-        padding: 20px;
+        background: #f8fafc;
+        padding: 2rem 1rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .header h1 {
+        color: #1e3a8a;
+        font-size: 2.5rem;
+        margin: 0 0 1rem 0;
+      }
+
+      .header p {
+        color: #64748b;
+        max-width: 600px;
+        margin: 0 auto;
       }
 
       .calculators-container {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
-        max-width: 1000px;
-        width: 100%;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
       }
 
       .calculator {
         background: white;
-        padding: 30px;
-        border-radius: 16px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        text-align: center;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease;
       }
 
-      h2 {
-        color: #202124;
-        margin: 0 0 25px 0;
-        font-size: 1.8rem;
+      .calculator:hover {
+        transform: translateY(-2px);
+      }
+
+      .calculator h2 {
+        color: #1e293b;
+        margin: 0 0 2rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .input-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+      }
+
+      .input-group label {
+        display: block;
+        color: #475569;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
       }
 
       input {
         width: 100%;
-        padding: 15px;
-        margin: 15px 0;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        text-align: center;
-        transition: border-color 0.3s ease;
+        padding: 0.875rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: border-color 0.2s ease;
       }
 
       input:focus {
         outline: none;
-        border-color: currentColor;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
       }
 
       button {
-        background: #1a73e8;
+        background: #3b82f6;
         color: white;
         border: none;
-        padding: 16px;
-        border-radius: 8px;
+        padding: 1rem;
+        border-radius: 0.5rem;
         cursor: pointer;
         width: 100%;
-        font-size: 1.1rem;
-        font-weight: 500;
-        transition: background 0.3s ease;
-        margin-top: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: background 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      button:hover {
+        background: #2563eb;
       }
 
       .listening button {
-        background: #34a853;
+        background: #10b981;
       }
 
       .listening button:hover {
-        background: #2b8a47;
+        background: #059669;
+      }
+
+      .overall button {
+        background: #8b5cf6;
+      }
+
+      .overall button:hover {
+        background: #7c3aed;
       }
 
       .result {
-        margin-top: 25px;
-        font-size: 1.4rem;
-        font-weight: bold;
-        padding: 20px;
-        border-radius: 8px;
-        background: #f8f9fa;
+        margin-top: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background: #f8fafc;
+        text-align: center;
+        transition: opacity 0.2s ease;
       }
 
       .reading .result {
-        color: #1a73e8;
+        color: #3b82f6;
       }
 
       .listening .result {
-        color: #34a853;
+        color: #10b981;
       }
 
+      .overall .result {
+        color: #8b5cf6;
+        font-size: 2rem;
+      }
+
+      .reading-color {
+        color: #3b82f6;
+      }
+
+      .listening-color {
+        color: #10b981;
+      }
+
+      .overall-color {
+        color: #8b5cf6;
+      }
       .notification {
         position: fixed;
-        top: 20px;
-        background: #1a73e8;
+        top: 1.5rem;
+        background: #3b82f6;
         color: white;
-        padding: 15px 30px;
-        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
         display: none;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        font-size: 0.9rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
 
       @media (max-width: 768px) {
         .calculators-container {
           grid-template-columns: 1fr;
-          gap: 20px;
         }
 
-        .calculator {
-          padding: 25px;
+        .header h1 {
+          font-size: 2rem;
         }
       }
     </style>
   </head>
   <body>
-    <div class="notification" id="notification">Score calculated!</div>
-
-    <div class="calculators-container">
-      <!-- Reading Calculator -->
-      <div class="calculator reading">
-        <h2>Reading Score Calculator</h2>
-        <input
-          type="number"
-          id="readingInput"
-          placeholder="Correct answers (0-40)"
-          min="0"
-          max="40"
-        />
-        <button onclick="calculateReading()">Calculate Reading Band</button>
-        <div class="result" id="readingResult">-</div>
+    <div class="container">
+      <div class="header">
+        <h1>IELTS Score Calculator</h1>
+        <p>
+          Calculate your IELTS Academic scores for
+          <span class="reading-color">Reading</span>,
+          <span class="listening-color">Listening</span>, and
+          <span class="overall-color"> Overall </span> Band
+        </p>
       </div>
 
-      <!-- Listening Calculator -->
-      <div class="calculator listening">
-        <h2>Listening Score Calculator</h2>
-        <input
-          type="number"
-          id="listeningInput"
-          placeholder="Correct answers (0-40)"
-          min="0"
-          max="40"
-        />
-        <button onclick="calculateListening()">Calculate Listening Band</button>
-        <div class="result" id="listeningResult">-</div>
+      <div class="calculators-container">
+        <!-- Overall Band Calculator -->
+        <div class="calculator overall">
+          <h2>Overall Band Score</h2>
+          <div class="input-group">
+            <label for="listeningBand">Listening Band</label>
+            <input
+              type="number"
+              id="listeningBand"
+              min="0"
+              max="9"
+              step="0.5"
+              placeholder="0.0 - 9.0"
+            />
+          </div>
+          <div class="input-group">
+            <label for="readingBand">Reading Band</label>
+            <input
+              type="number"
+              id="readingBand"
+              min="0"
+              max="9"
+              step="0.5"
+              placeholder="0.0 - 9.0"
+            />
+          </div>
+          <div class="input-group">
+            <label for="writingBand">Writing Band</label>
+            <input
+              type="number"
+              id="writingBand"
+              min="0"
+              max="9"
+              step="0.5"
+              placeholder="0.0 - 9.0"
+            />
+          </div>
+          <div class="input-group">
+            <label for="speakingBand">Speaking Band</label>
+            <input
+              type="number"
+              id="speakingBand"
+              min="0"
+              max="9"
+              step="0.5"
+              placeholder="0.0 - 9.0"
+            />
+          </div>
+          <button onclick="calculateOverallBand()">
+            <span>Calculate Overall Band</span>
+          </button>
+          <div class="result" id="overallResult">-</div>
+        </div>
+
+        <!-- Reading Calculator -->
+        <div class="calculator reading">
+          <h2>Reading Score</h2>
+          <div class="input-group">
+            <label for="readingInput">Correct Answers (0-40)</label>
+            <input
+              type="number"
+              id="readingInput"
+              min="0"
+              max="40"
+              placeholder="Enter correct answers"
+            />
+          </div>
+          <button onclick="calculateReading()">
+            <span>Calculate Reading Band</span>
+          </button>
+          <div class="result" id="readingResult">-</div>
+        </div>
+
+        <!-- Listening Calculator -->
+        <div class="calculator listening">
+          <h2>Listening Score</h2>
+          <div class="input-group">
+            <label for="listeningInput">Correct Answers (0-40)</label>
+            <input
+              type="number"
+              id="listeningInput"
+              min="0"
+              max="40"
+              placeholder="Enter correct answers"
+            />
+          </div>
+          <button onclick="calculateListening()">
+            <span>Calculate Listening Band</span>
+          </button>
+          <div class="result" id="listeningResult">-</div>
+        </div>
       </div>
     </div>
 
+    <div class="notification" id="notification">Score calculated!</div>
+
+    <!-- Keep the same JavaScript as before -->
     <script>
       const readingBandScores = [
         { range: [39, 40], band: 9.0 },
@@ -246,6 +387,27 @@
         setTimeout(() => {
           notification.style.display = "none";
         }, 1500);
+      }
+
+      function roundToNearestHalf(score) {
+        return Math.round(score * 2) / 2;
+      }
+
+      function calculateOverallBand() {
+        const listening =
+          parseFloat(document.getElementById("listeningBand").value) || 0;
+        const reading =
+          parseFloat(document.getElementById("readingBand").value) || 0;
+        const writing =
+          parseFloat(document.getElementById("writingBand").value) || 0;
+        const speaking =
+          parseFloat(document.getElementById("speakingBand").value) || 0;
+
+        const average = (listening + reading + writing + speaking) / 4;
+        const overallBand = roundToNearestHalf(average);
+        document.getElementById("overallResult").textContent =
+          overallBand.toFixed(1);
+        showNotification();
       }
     </script>
   </body>
